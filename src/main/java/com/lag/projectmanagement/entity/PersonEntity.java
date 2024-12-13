@@ -1,6 +1,17 @@
 package com.lag.projectmanagement.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.JoinTable;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -19,6 +30,9 @@ public class PersonEntity {
 
     @Column(name = "last_name")
     private String lastName;
+
+    @Column(name = "age")
+    private Integer age;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
@@ -41,6 +55,10 @@ public class PersonEntity {
     @JoinColumn(name = "account_id")
     private AccountEntity account;
 
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity categoryEntity;
+
     public PersonEntity() {
     }
 
@@ -49,6 +67,29 @@ public class PersonEntity {
             String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public PersonEntity(
+            Long id,
+            String firstName,
+            String lastName,
+            Integer age,
+            LocalDate birthDate,
+            Byte gender,
+            String phoneNumber,
+            Set<RoleEntity> roles,
+            AccountEntity account,
+            CategoryEntity categoryEntity) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.roles = roles;
+        this.account = account;
+        this.categoryEntity = categoryEntity;
     }
 
     public Long getId() {
@@ -73,6 +114,14 @@ public class PersonEntity {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public LocalDate getBirthDate() {
@@ -113,5 +162,29 @@ public class PersonEntity {
 
     public void setAccount(AccountEntity account) {
         this.account = account;
+    }
+
+    public CategoryEntity getCategoryEntity() {
+        return categoryEntity;
+    }
+
+    public void setCategoryEntity(CategoryEntity categoryEntity) {
+        this.categoryEntity = categoryEntity;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonEntity[" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", age=" + age +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", roles=" + roles +
+                ", account=" + account +
+                ", categoryEntity=" + categoryEntity +
+                ']';
     }
 }
