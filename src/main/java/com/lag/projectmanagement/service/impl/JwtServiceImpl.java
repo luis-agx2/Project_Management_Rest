@@ -3,6 +3,7 @@ package com.lag.projectmanagement.service.impl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import com.lag.projectmanagement.service.JwtService;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
 import java.util.function.Function;
 
 @Service
@@ -22,8 +24,9 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> extraClaims = new HashMap<>();
+        List<String> roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
-        extraClaims.put("roles  ", userDetails.getAuthorities());
+        extraClaims.put("roles  ", roles);
         extraClaims.put("email", userDetails.getUsername());
 
         return generateToken(extraClaims, userDetails);
